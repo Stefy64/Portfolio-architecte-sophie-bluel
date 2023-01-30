@@ -8,15 +8,17 @@ async function getWorks(){
 
     works.forEach(elt => {
 
-      
-      let img = document.createElement("img");
-      let div = document.createElement("div");
+      const div = document.createElement("div");
+      const img = document.createElement("img");
       
       img.src = elt.imageUrl;
-      div.innerHTML = elt.title;
       
       img.crossOrigin = "anonymous";
+      div.innerHTML = elt.title;
       div.appendChild(img);
+      
+      
+      
 
       const sectionPortfolio = document.getElementById("portfolio");
       sectionPortfolio.appendChild(div);
@@ -37,22 +39,25 @@ async function getCategories(){
 }).then(function(categories) {
   console.log("categories", categories);
 
+  
+    
+  const categoriesElt = document.getElementsByClassName("filters")[0];
+  const test = categories.map((category) => {
+  return `<button data-id="${category.id}">${category.name}</button>`
+});
+  categoriesElt.innerHTML = test.join('');
+
     const button = document.createElement("button");
-    const categoriesElt = document.getElementsByClassName("filters")[0];
+    categoriesElt.appendChild(button).setAttribute ("data-id", 0);
+    document.getElementsByClassName("filters");
     button.innerHTML = "Tous";
-
-    const test = categories.map((category) => {
-    return `<button data-id="${category.id}">${category.name}</button>`
-    });
-    categoriesElt.innerHTML = test.join('');
- 
-
-
-
+  
 
 }).catch(function(err) {  
   console.log("Une erreur se produit");
   console.log(err);
 });
+
 }
 getCategories();
+
