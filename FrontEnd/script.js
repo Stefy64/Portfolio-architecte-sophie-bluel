@@ -17,13 +17,28 @@ async function getWorks(){
       div.innerHTML = elt.title;
       div.appendChild(img);
       
-      
-      
-
       const sectionPortfolio = document.getElementById("portfolio");
       sectionPortfolio.appendChild(div);
+});
 
-    });
+const objects = works.filter(function (objects){
+  return objects.categoryId >= 3;
+});
+console.log ("HR", objects);
+
+
+const objects2 = works.filter(function (objects2){
+  return objects2.categoryId <= 1;
+});
+console.log ("objects", objects2);
+
+const objects3 = works.filter(function (objects3){
+  return objects3.categoryId > 1 ;
+});
+console.log ("apparts", objects3);
+
+
+
   }).catch(function(err) {  
     console.log("Une erreur se produit");
     console.log(err);
@@ -47,11 +62,12 @@ async function getCategories(){
 });
   categoriesElt.innerHTML = test.join('');
 
-    const button = document.createElement("button");
+    const button = document.createElement("button")
     categoriesElt.appendChild(button).setAttribute ("data-id", 0);
     document.getElementsByClassName("filters");
     button.innerHTML = "Tous";
-  
+
+    
 
 }).catch(function(err) {  
   console.log("Une erreur se produit");
@@ -60,4 +76,6 @@ async function getCategories(){
 
 }
 getCategories();
+
+//Category filter
 

@@ -34,7 +34,7 @@ body {
 }
 footer {
 	background-color: white;
-	height: 100px;
+	height: 75px;
 }
 ol, ul {
 	list-style: none;
@@ -205,7 +205,8 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
+	padding: 35px;
 }
 
 /**CSS LOGIN**/
@@ -237,5 +238,8 @@ footer nav ul {
 	align-items: center;
 	justify-content: space-between;
 	padding-left: 16px;
-
+}
+.filters button:hover{
+	background-color: #1D6154;
+	color:white;
 }
