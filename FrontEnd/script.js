@@ -10,15 +10,12 @@ async function getWorks(){
 
       const div = document.createElement("div");
       const img = document.createElement("img");
-      
-      img.src = elt.imageUrl;
-      
+      const sectionPortfolio = document.getElementById("portfolio");
+      sectionPortfolio.appendChild(div);
       img.crossOrigin = "anonymous";
       div.innerHTML = elt.title;
       div.appendChild(img);
-      
-      const sectionPortfolio = document.getElementById("portfolio");
-      sectionPortfolio.appendChild(div);
+      img.src = elt.imageUrl;
 });
 
 const objects = works.filter(function (objects){
@@ -37,6 +34,29 @@ const objects3 = works.filter(function (objects3){
 });
 console.log ("apparts", objects3);
 
+
+const filter = document.querySelectorAll(".filter");
+    filter.forEach(function (gallery) {
+    button.addEventListener("click", (e) => {
+      gallery.innerHTML = "";
+      dataGallery
+        .filter((categoryId) => categoryId.category.number === e.target.number)
+        .forEach((categoryId) => {
+          const div = document.createElement("div");
+          div.classList.add("gallery__gategoryId");
+          div.innerHTML = `
+                              <figure>
+                                <img crossorigin="" src=${categoryId.imageUrl} alt=${categoryId.title}>
+                                <figcaption>${categoryId.title}</figcaption>
+                            </figure>
+                        `;
+          gallery.appendChild(div);
+        });
+    });
+  });
+  console.log ("filter", filter)
+
+  
 
 
   }).catch(function(err) {  
@@ -57,17 +77,19 @@ async function getCategories(){
   
     
   const categoriesElt = document.getElementsByClassName("filters")[0];
+  const button = document.createElement("button");
+  document.getElementsByClassName("filters");
+  button.innerHTML = "Tous";
   const test = categories.map((category) => {
   return `<button data-id="${category.id}">${category.name}</button>`
 });
   categoriesElt.innerHTML = test.join('');
-
-    const button = document.createElement("button")
-    categoriesElt.appendChild(button).setAttribute ("data-id", 0);
-    document.getElementsByClassName("filters");
-    button.innerHTML = "Tous";
-
+  categoriesElt.appendChild(button).setAttribute ("data-id", 0);
     
+    
+    
+
+  
 
 }).catch(function(err) {  
   console.log("Une erreur se produit");
