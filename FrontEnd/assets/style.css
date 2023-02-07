@@ -239,6 +239,9 @@ footer nav ul {
 	justify-content: space-between;
 	padding-left: 16px;
 }
+input[type="submit"] {
+	cursor: pointer;
+}
 .filters button:hover{
 	background-color: #1D6154;
 	color:white;
