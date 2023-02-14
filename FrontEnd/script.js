@@ -22,6 +22,7 @@ async function getWorks() {
         div.appendChild(img);
       });
 console.log("works", works)
+
       const button = document.getElementsByClassName("button")
       console.log("button",button)
       button.forEach(function (button) {

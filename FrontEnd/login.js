@@ -1,7 +1,8 @@
 const button = document.querySelector("#button");
-button.addEventListener("click", loginClick);
-function loginClick(event) {
+console.log("button", button);
+button.addEventListener("click", async function (event) {
   event.preventDefault();
+  
   
 
   const loginClick = {
@@ -9,15 +10,15 @@ function loginClick(event) {
     password: document.getElementById("password").value,
   };
 
-  const response = fetch("http://localhost:5678/api/users/login", {
+  let response = await fetch("http://localhost:5678/api/users/login", {
     method: "POST",
-    headers: { accept: "application/json", "content-type": "application/JSON" },
+    headers: { "content-type": "application/JSON" },
     body: JSON.stringify(loginClick),
   });
 
-  const result = response.json();
-  const token = result.token;
-  console.log(result)
+  let result = await response.json();
+  let token = result.token;
+  console.log(result);
 
   if (response.status == "200") {
     window.localStorage.setItem("token", token);
@@ -26,4 +27,4 @@ function loginClick(event) {
     console.log("error 404");
     return alert("l'identifiant et/ou le mot de passe ne correspondent pas");
   }
-}
+});
