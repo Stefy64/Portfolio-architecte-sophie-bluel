@@ -21,30 +21,35 @@ async function getWorks() {
   `;
         div.appendChild(img);
       });
-console.log("works", works)
 
-      const button = document.getElementsByClassName("button")
-      console.log("button",button)
-      button.forEach(function (button) {
-        button.addEventListener("click", (e) => {
-          console.log(e.target)
-          gallery.innerHTML = "";
-          works
-            .filter((item) => item.categoryId === e.target.value)
-            .forEach((item) => {
-              const div = document.createElement("div");
-              div.classList.add("gallery__item");
-              div.innerHTML = `
-                              <figure>
-                                <img crossorigin="" src=${item.imageUrl} alt=${item.title}>
-                                <figcaption>${item.title}</figcaption>
-                            </figure>
-                        `;
-              gallery.appendChild(div);
-            });
+fetch("http://localhost:5678/api/works")
+    .then(res => res.json())
+    .then((data) => {
+
+const objets = document.getElementById("objets");
+const appartements = document.getElementById("appartements");
+const hotels = document.getElementById("hotels");
+console.log(objets, appartements, hotels);
+    
+objets.addEventListener("click", function () {
+        const projetsFiltres = data.filter(function (data) {
+            return data.categoryId == 1;
         });
-      });
-      console.log("filter", button);
+        console.log(projetsFiltres);
+    })
+appartements.addEventListener("click", function () {
+        const projetsFiltres = data.filter(function (data) {
+            return data.categoryId == 2;
+        });
+        console.log(projetsFiltres);
+    })
+hotels.addEventListener("click", function () {
+        const projetsFiltres = data.filter(function (data) {
+            return data.categoryId == 3;
+        });
+        console.log(projetsFiltres);
+    })
+})
     })
     .catch(function (err) {
       console.log("Une erreur se produit");
@@ -66,13 +71,15 @@ async function getCategories() {
       const categoriesElt = document.getElementsByClassName("filters")[0];
       const button = document.createElement("button");
       button.innerHTML = "Tous";
+      button.className = "button";
       document.getElementsByClassName("button");
-      button.setAttribute("data-id", 0);
+      
       const test = categories.map((category) => {
-        return `<button class="button" value="${category.id}" data-id="${category.id}">${category.name}</button>`;
+        return `<button class="button" value="${category.id}">${category.name}</button>`;
       });
       categoriesElt.innerHTML = test.join("");
       categoriesElt.appendChild(button);
+      button.setAttribute("value", 0);
     })
     .catch(function (err) {
       console.log("Une erreur se produit");

@@ -1,19 +1,16 @@
-const button = document.querySelector("#button");
-console.log("button", button);
-button.addEventListener("click", async function (event) {
+let buttonlogin = document.querySelector(".buttonlogin");
+console.log("button", buttonlogin);
+buttonlogin.addEventListener("click", async function (event) {
   event.preventDefault();
-  
-  
 
-  const loginClick = {
+  let buttonlogin = {
     email: document.getElementById("email").value,
     password: document.getElementById("password").value,
   };
-
   let response = await fetch("http://localhost:5678/api/users/login", {
     method: "POST",
     headers: { "content-type": "application/JSON" },
-    body: JSON.stringify(loginClick),
+    body: JSON.stringify(buttonlogin),
   });
 
   let result = await response.json();

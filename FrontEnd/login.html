@@ -30,12 +30,12 @@
         <h2>Log In</h2>
         <form class="form-base" method="post" action="#">
           <label for="email">E-mail</label>
-          <input class="input-base" type="email" name="email" required>
+          <input class="input-base" type="email" name="email" id="email" required>
           <label for="password">Mot de passe</label>
-          <input class="input-base" type="password" name="password" required>
+          <input class="input-base" type="password" name="password" id="password" required>
           <!-- Login Error -->
           <div id="error-msg-log"></div>
-          <input id="button" type="submit" name="submit-login" value="Se connecter">
+          <button class="buttonlogin" type="button">Se connecter</button>
         </form>
         <a href="#">Mot de passe oublié</a>
       </div>
@@ -48,7 +48,7 @@
         </ul>
       </nav>
     </footer>
-    <script src="script.js"></script>
     <script src="login.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
