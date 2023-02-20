@@ -22,34 +22,77 @@ async function getWorks() {
         div.appendChild(img);
       });
 
-fetch("http://localhost:5678/api/works")
-    .then(res => res.json())
-    .then((data) => {
+      fetch("http://localhost:5678/api/works")
+        .then((res) => res.json())
+        .then((data) => {
+          const objets = document.getElementById("Objets");
+          const appartements = document.getElementById("Appartements");
+          const hotels = document.getElementById("Hotels");
+          const tous = document.getElementById("Tous");
+          const sectionPortfolio = document.getElementById("portfolio");
 
-const objets = document.getElementById("objets");
-const appartements = document.getElementById("appartements");
-const hotels = document.getElementById("hotels");
-console.log(objets, appartements, hotels);
-    
-objets.addEventListener("click", function () {
-        const projetsFiltres = data.filter(function (data) {
-            return data.categoryId == 1;
+          objets.addEventListener("click", function () {
+            console.log("click");
+            const projetsFiltres = data
+              .filter(function (data) {
+                return data.categoryId == 1;
+              })
+              .map(
+                (elt) => `<figure>
+            <img crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+            <figcaption>${elt.title}</figcaption>
+        </figure>`
+              );
+          console.log(projetsFiltres, "projetsfiltres");
+          sectionPortfolio.innerHTML = projetsFiltres;
+          });
+          appartements.addEventListener("click", function () {
+            const projetsFiltres = data
+              .filter(function (data) {
+                return data.categoryId == 2;
+              })
+              .map(
+                (elt) => `<figure>
+            <img crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+            <figcaption>${elt.title}</figcaption>
+        </figure>`
+              );
+            sectionPortfolio.innerHTML = projetsFiltres;
+
+            console.log(projetsFiltres);
+          });
+          hotels.addEventListener("click", function () {
+            const projetsFiltres = data
+              .filter(function (data) {
+                return data.categoryId == 3;
+              })
+              .map(
+                (elt) => `<figure>
+            <img class=category crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+            <figcaption>${elt.title}</figcaption>
+        </figure>`
+              );
+            sectionPortfolio.innerHTML = projetsFiltres;
+
+            console.log(projetsFiltres);
+          });
+          tous.addEventListener("click", function () {
+            const projetsFiltres = data
+              .filter(function (data) {
+                return data.categoryId == 1, 2, 3;
+              })
+              .map(
+                (elt) => `<figure>
+            <img crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+            <figcaption>${elt.title}</figcaption>
+        </figure>`
+              );
+
+            console.log(projetsFiltres, "projetsfiltres");
+
+            sectionPortfolio.innerHTML = projetsFiltres;
+          });
         });
-        console.log(projetsFiltres);
-    })
-appartements.addEventListener("click", function () {
-        const projetsFiltres = data.filter(function (data) {
-            return data.categoryId == 2;
-        });
-        console.log(projetsFiltres);
-    })
-hotels.addEventListener("click", function () {
-        const projetsFiltres = data.filter(function (data) {
-            return data.categoryId == 3;
-        });
-        console.log(projetsFiltres);
-    })
-})
     })
     .catch(function (err) {
       console.log("Une erreur se produit");
@@ -73,9 +116,9 @@ async function getCategories() {
       button.innerHTML = "Tous";
       button.className = "button";
       document.getElementsByClassName("button");
-      
+
       const test = categories.map((category) => {
-        return `<button class="button" value="${category.id}">${category.name}</button>`;
+        return `<button class="button" id=${category.name} value="${category.id}">${category.name}</button>`;
       });
       categoriesElt.innerHTML = test.join("");
       categoriesElt.appendChild(button);

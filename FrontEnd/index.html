@@ -25,6 +25,15 @@
       </nav>
     </header>
     <main>
+      <!-- Modal -->
+      <div
+        id="edit-modal"
+        class="modal1"
+        data-show="false"
+        style="display: none"
+      >
+        <article class="modal-wrapper js-modal-stop"></article>
+      </div>
       <div id="introduction">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="">
@@ -51,6 +60,7 @@
 
       <section id="title">
         <h2>Mes Projets</h2>
+        <a class="js-edit js-modal base-link" href="#edit-modal"></a>
       </section>
       <div class="filters"></div>
       <div id="portfolio"></div>
@@ -78,5 +88,6 @@
       </nav>
     </footer>
     <script src="script.js"></script>
+    <script src="modal.js"></script>
   </body>
 </html>
