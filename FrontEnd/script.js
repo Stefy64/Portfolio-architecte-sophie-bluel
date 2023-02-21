@@ -21,18 +21,14 @@ async function getWorks() {
   `;
         div.appendChild(img);
       });
+      
+// Filters category
 
       fetch("http://localhost:5678/api/works")
         .then((res) => res.json())
         .then((data) => {
           const objets = document.getElementById("Objets");
-          const appartements = document.getElementById("Appartements");
-          const hotels = document.getElementById("Hotels");
-          const tous = document.getElementById("Tous");
-          const sectionPortfolio = document.getElementById("portfolio");
-
           objets.addEventListener("click", function () {
-            console.log("click");
             const projetsFiltres = data
               .filter(function (data) {
                 return data.categoryId == 1;
@@ -43,9 +39,10 @@ async function getWorks() {
             <figcaption>${elt.title}</figcaption>
         </figure>`
               );
-          console.log(projetsFiltres, "projetsfiltres");
-          sectionPortfolio.innerHTML = projetsFiltres;
+            sectionPortfolio.innerHTML = projetsFiltres;
           });
+
+          const appartements = document.getElementById("Appartements");
           appartements.addEventListener("click", function () {
             const projetsFiltres = data
               .filter(function (data) {
@@ -58,9 +55,9 @@ async function getWorks() {
         </figure>`
               );
             sectionPortfolio.innerHTML = projetsFiltres;
-
-            console.log(projetsFiltres);
           });
+
+          const hotels = document.getElementById("Hotels");
           hotels.addEventListener("click", function () {
             const projetsFiltres = data
               .filter(function (data) {
@@ -73,13 +70,15 @@ async function getWorks() {
         </figure>`
               );
             sectionPortfolio.innerHTML = projetsFiltres;
-
-            console.log(projetsFiltres);
           });
+
+          const tous = document.getElementById("Tous");
+          const sectionPortfolio = document.getElementById("portfolio");
+
           tous.addEventListener("click", function () {
             const projetsFiltres = data
               .filter(function (data) {
-                return data.categoryId == 1, 2, 3;
+                return data.categoryId === 1, 2, 3;
               })
               .map(
                 (elt) => `<figure>
@@ -87,8 +86,7 @@ async function getWorks() {
             <figcaption>${elt.title}</figcaption>
         </figure>`
               );
-
-            console.log(projetsFiltres, "projetsfiltres");
+              console.log("click");
 
             sectionPortfolio.innerHTML = projetsFiltres;
           });

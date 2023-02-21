@@ -262,12 +262,10 @@ footer nav ul {
 .modal1 {
 	position: fixed;
 	display: flex;
-	align-items: center;
-	justify-content: center;
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.30);
-	animation: fadeIn .3s both;
+	height: 5%;
+	background: black;
+	display: none;
 }
