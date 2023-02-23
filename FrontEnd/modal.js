@@ -1,28 +1,36 @@
 let modal = null
 let userImage = false;
 
-if (token != null) {
 const openModal = function (e){
     e.preventDefault()
-    const target = document.querySelector(e.target.getAttribute("buttonlogin"));
+    const target = document.querySelector(e.target.getAttribute("href"));
     target.style.display = null;
-    ////target.setAttribute("aria-modal", "true");
+    target.removeAttribute("aria-hidden")
+    target.setAttribute("aria-modal", "true");
     modal = target;
     modal.addEventListener("click", closeModal);
     modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
+    modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
 }
+console.log(openModal, "modal")
 
 const closeModal = function (e){
     if (modal === nul) return
     e.preventDefault();
     modal.style.display = "none";
-    //modal.setAttribute("aria-hidden", "true");
-    //modal.removeAttribute("aria-modal");
+    modal.setAttribute("aria-hidden", "true");
+    modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
+    modal.querySelector(".js-modal-close").removeEventListener("click", closeModal);
+    modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation);
     modal = null;
+}
+console.log(closeModal,"closeModal")
+
+const stopPropagation = function (e){
+    e.stopPropagation()
 }
 
 document.querySelectorAll(".js-modal").forEach(a => {
     a.addEventListener("click", openModal)
-})
-};
+});

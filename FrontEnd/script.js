@@ -15,18 +15,20 @@ async function getWorks() {
         sectionPortfolio.appendChild(div);
         div.innerHTML = `
         <figure>
-          <img crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+          <img crossorigin="anonymous" src=${elt.imageUrl} alt=${elt.title}>
           <figcaption>${elt.title}</figcaption>
       </figure>
   `;
         div.appendChild(img);
       });
-      
-// Filters category
+
+      // Filters category
 
       fetch("http://localhost:5678/api/works")
         .then((res) => res.json())
         .then((data) => {
+          const sectionPortfolio = document.getElementById("portfolio");
+
           const objets = document.getElementById("Objets");
           objets.addEventListener("click", function () {
             const projetsFiltres = data
@@ -35,10 +37,10 @@ async function getWorks() {
               })
               .map(
                 (elt) => `<figure>
-            <img crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+            <img crossorigin="anonymous" src=${elt.imageUrl} alt=${elt.title}>
             <figcaption>${elt.title}</figcaption>
         </figure>`
-              );
+      );
             sectionPortfolio.innerHTML = projetsFiltres;
           });
 
@@ -50,7 +52,7 @@ async function getWorks() {
               })
               .map(
                 (elt) => `<figure>
-            <img crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+            <img crossorigin="anonymous" src=${elt.imageUrl} alt=${elt.title}>
             <figcaption>${elt.title}</figcaption>
         </figure>`
               );
@@ -65,7 +67,7 @@ async function getWorks() {
               })
               .map(
                 (elt) => `<figure>
-            <img class=category crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
+            <img class=category crossorigin="anonymous" src=${elt.imageUrl} alt=${elt.title}>
             <figcaption>${elt.title}</figcaption>
         </figure>`
               );
@@ -73,22 +75,17 @@ async function getWorks() {
           });
 
           const tous = document.getElementById("Tous");
-          const sectionPortfolio = document.getElementById("portfolio");
-
+          tous.setAttribute("value", 0);
           tous.addEventListener("click", function () {
             const projetsFiltres = data
-              .filter(function (data) {
-                return data.categoryId === 1, 2, 3;
-              })
-              .map(
-                (elt) => `<figure>
-            <img crossorigin="" src=${elt.imageUrl} alt=${elt.title}>
-            <figcaption>${elt.title}</figcaption>
-        </figure>`
-              );
-              console.log("click");
+            .map(
+              (elt) => `<figure>
+          <img class=category crossorigin="anonymous" src=${elt.imageUrl} alt=${elt.title}>
+          <figcaption>${elt.title}</figcaption>
+      </figure>`
+            );
+          sectionPortfolio.innerHTML = projetsFiltres;
 
-            sectionPortfolio.innerHTML = projetsFiltres;
           });
         });
     })
@@ -111,8 +108,9 @@ async function getCategories() {
 
       const categoriesElt = document.getElementsByClassName("filters")[0];
       const button = document.createElement("button");
-      button.innerHTML = "Tous";
       button.className = "button";
+      button.setAttribute("id", "Tous");
+      button.innerHTML = "Tous";
       document.getElementsByClassName("button");
 
       const test = categories.map((category) => {
@@ -120,7 +118,7 @@ async function getCategories() {
       });
       categoriesElt.innerHTML = test.join("");
       categoriesElt.appendChild(button);
-      button.setAttribute("value", 0);
+      
     })
     .catch(function (err) {
       console.log("Une erreur se produit");

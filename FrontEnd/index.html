@@ -26,13 +26,20 @@
     </header>
     <main>
       <!-- Modal -->
-      <div
-        id="buttonlogin"
-        class="modal1"
+      <a href="#modal1" class="js-modal" id="buttonlogin">Ouvrir</a>
+
+      <aside
+        id="modal1"
+        class="modal"
+        aria-hidden="true"
+        role="dialog"
         data-show="false"
+        style="display: none;"
       >
-        <article class="modal-wrapper js-modal-stop"></article>
-      </div>
+        <div class="modal-wrapper js-modal-close js-modal-stop"> <!-- publier changement -->
+          <button class="js-modal-close">Publier les changements</button>
+        </div>
+      </aside>
       <div id="introduction">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="">
@@ -59,7 +66,7 @@
 
       <section id="title">
         <h2>Mes Projets</h2>
-        <a class="js-edit js-modal base-link" href="buttonlogin"></a>
+        
       </section>
       <div class="filters"></div>
       <div id="portfolio"></div>
