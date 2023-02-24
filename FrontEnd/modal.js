@@ -1,13 +1,17 @@
 let modal = null
-let userImage = false;
 
-const openModal = function (e){
+
+const openModal = async function (e){
     e.preventDefault()
-    const target = document.querySelector(e.target.getAttribute("href"));
-    target.style.display = null;
-    target.removeAttribute("aria-hidden")
-    target.setAttribute("aria-modal", "true");
-    modal = target;
+    const target = e.target.getAttribute("href");
+    if (target.startsWith("#")){
+        modal = document.querySelector(target)
+    } else {
+        modal = await loadModal(target)
+    }
+    modal.style.display = null;
+    modal.removeAttribute("aria-hidden")
+    modal.setAttribute("aria-modal", "true");
     modal.addEventListener("click", closeModal);
     modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
     modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
@@ -17,7 +21,9 @@ console.log(openModal, "modal")
 const closeModal = function (e){
     if (modal === nul) return
     e.preventDefault();
-    modal.style.display = "none";
+    window.setTimeout(function () {
+        modal.style.display = "none";    
+    }, 500)
     modal.setAttribute("aria-hidden", "true");
     modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
@@ -29,6 +35,11 @@ console.log(closeModal,"closeModal")
 
 const stopPropagation = function (e){
     e.stopPropagation()
+}
+const loadModal = async function (url){
+    const target = "#" + url.split("#")[1]
+  const html = await fetch(login.html).then(response => response.text())
+  console.log(html, target)
 }
 
 document.querySelectorAll(".js-modal").forEach(a => {
