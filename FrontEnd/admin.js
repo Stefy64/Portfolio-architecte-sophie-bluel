@@ -1,8 +1,8 @@
-//This JavaScript file load all admins modules and panels, in case we are login
+
 const token = localStorage.getItem("token");
 console.log(token);
 
-//when logged in, change text, for example 'login' to 'logout'
+
 function changeInnerHtml(element, newInnerHtml) {
     element.innerHTML = newInnerHtml;
 }
@@ -13,8 +13,6 @@ function logOut(element) {
         localStorage.clear();
     })   
 }
-
-//add black header on top of the page when logged in
 function addHeaderBlack(element) {
     let button = document.createElement('button');
     let icon = document.createElement('i');
@@ -27,8 +25,6 @@ function addHeaderBlack(element) {
 
     element.appendChild(button).innerHTML = "publier les changements";
 }
-
-//add "edit" with icon button to all class 'js-edit'
 function addEditButtons() {
     let elements = document.querySelectorAll('.js-edit');
 
@@ -38,7 +34,6 @@ function addEditButtons() {
     });
 }
 
-//to add the same "modifier" mode with edit icon
 function addIconWord(element, icon, string) {
     element.appendChild(icon)
     .classList.add('fa-solid', 'fa-pen-to-square');
