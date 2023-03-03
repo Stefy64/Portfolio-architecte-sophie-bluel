@@ -8,6 +8,7 @@ exports.findAll = async (req, res) =>  {
 
 exports.create = async (req, res) => {
 	const host = req.get('host');
+	console.log(req.body)
 	const title = req.body.title;
 	const categoryId = req.body.category;
 	const userId = req.auth.userId;

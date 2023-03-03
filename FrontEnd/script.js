@@ -1,5 +1,7 @@
 //Gallery
-
+function resetDOM(element) {
+  element.replaceChildren();
+}
 async function getWorks() {
   fetch("http://localhost:5678/api/works")
     .then(function (response) {

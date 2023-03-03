@@ -1,53 +1,66 @@
 const modalWrapper = document.getElementsByClassName("modal-wrapper")[0];
-let modal = null
+let modal = null;
 
 if (token != null) {
-const openModal = async function (e){
-    e.preventDefault()
+  const openModal = async function (e) {
+    e.preventDefault();
     const target = e.target.getAttribute("href");
-    if (target.startsWith("#")){
-        modal = document.querySelector(target)
+    if (target.startsWith("#")) {
+      modal = document.querySelector(target);
     } else {
-        modal = await loadModal(target)
+      modal = await loadModal(target);
     }
     modal.style.display = null;
-    modal.removeAttribute("aria-hidden")
+    modal.removeAttribute("aria-hidden");
     modal.setAttribute("aria-modal", "true");
     modal.addEventListener("click", closeModal);
-    modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
-    modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
-}
-console.log(openModal, "modal")
+    modal
+      .querySelector(".js-modal-close")
+      .addEventListener("click", closeModal);
+    modal
+      .querySelector(".js-modal-stop")
+      .addEventListener("click", stopPropagation);
+  };
+  console.log(openModal, "modal");
 
-const closeModal = function (e){
-    if (modal === null) return
+  const closeModal = function (e) {
+    if (modal === null) return;
     e.preventDefault();
     window.setTimeout(function () {
-        modal.style.display = "none";    
-    }, 500)
+      modal.style.display = "none";
+      modal = null;
+    }, 500);
     modal.setAttribute("aria-hidden", "true");
     modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
-    modal.querySelector(".js-modal-close").removeEventListener("click", closeModal);
-    modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation);
+    modal
+      .querySelector(".js-modal-close")
+      .removeEventListener("click", closeModal);
+    modal
+      .querySelector(".js-modal-stop")
+      .removeEventListener("click", stopPropagation);
     modal = null;
-}
-console.log(closeModal,"closeModal")
+  };
+  console.log(closeModal, "closeModal");
 
-const stopPropagation = function (e){
-    e.stopPropagation()
-}
-const loadModal = async function (url){
-    const target = "#" + url.split("#")[1]
-  const html = await fetch(login.html).then(response => response.text())
-  console.log(html, target)
-}
+  const stopPropagation = function (e) {
+    e.stopPropagation();
+  };
+  function eventModal() {
+    document.querySelector(".js-modal").addEventListener("click", openModal);
+  }
 
-document.querySelectorAll(".js-modal").forEach(a => {
-    a.addEventListener("click", openModal)
-});
-var htmlGalleryModal = `<h2 id="title-modal"></h2>
-        <div class="gallery-modal"></div>
+  const loadModal = async function (url) {
+    const target = "#" + url.split("#")[1];
+    const html = await fetch(url).then((response) => response.text());
+    console.log(html, target);
+  };
+
+  document.querySelectorAll(".js-modal").forEach((a) => {
+    a.addEventListener("click", openModal);
+  });
+  var htmlGalleryModal = `<h2 id="title-modal"></h2>
+        <div id="gallery-modal" class="gallery-modal"></div>
         <hr>
         <button id="add-img-btn" class="btn-primary">Ajouter une photo</button>
         <a class="delete-link" href="#">Supprimer la gallerie</a>`;
@@ -56,7 +69,7 @@ var htmlGalleryModal = `<h2 id="title-modal"></h2>
         <h2 id="title-modal"></h2>
         <form id="add-work-form" class="form-full" method="post" enctype="multipart/form-data">
             <div id="add-img">
-                <img src="assets/icons/picture-svgrepo.svg" alt="Ajouter une image">
+                <img alt="Ajouter une image">
                 <label for="image-file" class="btn-light">
                     <input type="file" id="image-file" name="image-file" class="none" accept="image/png, image/jpeg" required>
                     + Ajouter une photo
@@ -78,7 +91,6 @@ var htmlGalleryModal = `<h2 id="title-modal"></h2>
             <button type="submit" name="submit-btn" id="submit-work" class="btn-primary btn-disable" disabled>Valider</button>
         </form>`;
 
-  //add close modal button and title
   function addTemplateModal(title) {
     let closeButton = document.createElement("button");
     let iconClose = document.createElement("i");
@@ -89,7 +101,6 @@ var htmlGalleryModal = `<h2 id="title-modal"></h2>
     titleModal.innerHTML = title;
   }
 
-  //add modal gallery content
   function addGalleryContent() {
     modalWrapper.innerHTML = htmlGalleryModal;
     addTemplateModal("Galerie photo");
@@ -98,79 +109,37 @@ var htmlGalleryModal = `<h2 id="title-modal"></h2>
     const galleryModal = document.getElementsByClassName("gallery-modal")[0];
     eventModal();
 
-    promiseWorks
-      .then(function () {
-        works.forEach((work) => {
-          let figure = addWork(work, galleryModal, "éditer");
-          let iconButton = addDeleteIcons(figure, work);
+    var addWork = fetch("http://localhost:5678/api/works")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (works) {
+        console.log("photos", works);
+        const gallerymodal = document.getElementById("gallery-modal");
+        works.forEach((elt) => {
+          console.log(elt.title);
 
-          iconButton.addEventListener("click", deleteWorkAndRefresh);
+          const div = document.createElement("div");
+          const img = document.createElement("img");
+          gallerymodal.appendChild(div);
+
+          div.innerHTML = `
+          <figure>
+            <img crossorigin="anonymous" src=${elt.imageUrl}>
+          </figure>
+        `;
+
+          div.appendChild(img);
         });
-      })
-      .catch(function (err) {
-        console.log(
-          "L'erreur suivante sur l'ajout des travaux dans la fenêtre modale est survenue :"
-        );
-        console.log(err);
       });
 
+    function addWork() {
+      const figure = addWork(elt, galleryModal, "éditer");
+      const iconButton = addDeleteIcons(figure, elt);
+      iconButton.addEventListener("click", deleteWorkAndRefresh);
+    }
+    console.log(addWork);
     btnAddImg.addEventListener("click", addWorkModal);
-  }
-
-  const deleteWorkAndRefresh = async function (e) {
-    let id = e.target.dataset.id;
-    await fetch(worksOrigin + "/" + id, {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then(function () {
-        id = parseInt(id);
-        for (let i = 0; i < works.length; i++) {
-          //update works array
-          if (works[i].id === id) {
-            works.splice(i, i);
-          }
-        }
-        e.target.parentNode.style.display = "none"; //clear the element from DOM
-        resetDOM(gallery);
-        addAllWorks(works, gallery);
-      })
-      .catch(function (err) {
-        console.log("Une erreur sur la suppression d'un travail est survenue");
-        console.log(err);
-      });
-  };
-
-  function addDeleteIcons(element, work) {
-    let iconButton = document.createElement("button");
-    let icon = document.createElement("i");
-
-    element.appendChild(iconButton);
-    iconButton.classList.add("delete-icons");
-    iconButton.setAttribute("data-id", work.id);
-
-    iconButton.appendChild(icon).classList.add("fa-regular", "fa-trash-can");
-    icon.style.pointerEvents = "none";
-
-    return iconButton;
-  }
-
-  function openDropdownBtn(dropDownMenu) {
-    let dropDownBtn = document.querySelector(".input-field.dropbtn");
-    dropDownBtn.addEventListener("click", function (event) {
-      dropDownMenu.style.display = "block";
-      dropDownMenu.style.boxShadow = "0px 14px 16px rgba(0, 0, 0, 0.09)";
-
-      document
-        .querySelector(".js-modal-stop")
-        .addEventListener("click", closeDropDown);
-
-      document
-        .querySelector(".dropdown")
-        .addEventListener("click", stopPropagation);
-    });
   }
 
   const closeDropDown = function (e) {
@@ -184,163 +153,33 @@ var htmlGalleryModal = `<h2 id="title-modal"></h2>
       .removeEventListener("click", closeDropDown);
   };
 
-  //add categories from server to the dropdown menu in modal window "add img"
+
   function dropDownCategories(dropDownMenu) {
     let categories = getCategories();
     categories.then(function (value) {
-      value.forEach((category) => {
+      console.log(value)
+      value?.forEach((category) => {
         let listElement = document.createElement("li");
         dropDownMenu.appendChild(listElement);
         listElement.dataset.id = category.id;
         listElement.innerHTML = category.name;
         listElement.addEventListener("click", closeDropDown);
       });
-      setCategory(dropDownMenu);
+    
+      //setCategory(dropDownMenu);
     });
   }
 
-  //listen for click on categories from dropdown menu, and set it has a choice
-  function setCategory(dropDownMenu) {
-    dropDownMenu.addEventListener("click", function (event) {
-      let dropbtn = document.querySelector(".input-field.dropbtn");
-      let icon = "<i class='fa-solid fa-chevron-down'></i>";
-      dropbtn.innerHTML = event.target.textContent + icon;
-      dropbtn.dataset.id = event.target.dataset.id;
-    });
-  }
-
-  //get image the user just add
-  function getUserImage() {
-    let imageInput = document.getElementById("image-file");
-    imageInput.addEventListener("change", function (value) {
-      let userInput = imageInput.files[0];
-      if (userInput.type === "image/png" || userInput.type === "image/jpeg") {
-        let imgElt = document.createElement("img");
-        updateImg(imgElt, userInput);
-        getUserImage = true;
-      }
-    });
-  }
-
-  //update thumbnails img
-  function updateImg(imgElt, userInput) {
-    imgElt.classList.add("img-thumbnails");
-    imgElt.file = userInput;
-    let addImgContener = document.getElementById("add-img");
-
-    for (let child of addImgContener.children) {
-      child.style.display = "none";
-    }
-
-    addImgContener.appendChild(imgElt);
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      imgElt.src = e.target.result;
-    };
-    reader.readAsDataURL(userInput);
-  }
-
-  function errorMessage() {
-    let errorMsg = document.createElement("p");
-    errorMsg.classList.add("error-msg", "error-msg-float");
-    errorMsg.innerHTML = "Erreur avec le fichier ou le titre";
-    modalWrapper.appendChild(errorMsg);
-    setTimeout(function () {
-      modalWrapper.removeChild(errorMsg);
-    }, 2500);
-  }
-
-  function sendWork() {
-    let addWorkForm = document.getElementById("add-work-form").elements;
-    addWorkForm["submit-btn"].addEventListener("click", function (event) {
-      event.preventDefault();
-
-      if (
-        addWorkForm["title"].value === "" ||
-        addWorkForm["category"].dataset.id === "" ||
-        !userImage ||
-        addWorkForm["title"].value.length > 46
-      ) {
-        errorMessage();
-      } else {
-        addWorkForm["submit-btn"].setAttribute("disabled", "");
-        let formData = new FormData();
-
-        let userInput = addWorkForm["image-file"].files[0];
-
-        formData.append("title", addWorkForm["title"].value);
-        formData.append("category", addWorkForm["category"].dataset.id);
-        formData.append("image", userInput);
-
-        fetch(worksOrigin, {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-          body: formData,
-        })
-          .then(function (res) {
-            if (res.ok) {
-              return res.json();
-            } else {
-              console.log("Une erreur sur l'envoi d'un ouvrage est survenue.");
-              console.log(res);
-            }
-          })
-          .then(function (newWork) {
-            works.push(newWork);
-            resetDOM(gallery);
-            addAllWorks(works, gallery);
-          })
-          .then(function () {
-            document.getElementById("back-btn").click();
-          })
-          .catch(function (err) {
-            console.log(
-              "Une erreur sur l'envoi d'un ouvrage est survenue. Erreur : "
-            );
-            console.log(err);
-          });
-      }
-    });
-  }
-
-  function checkValidForm() {
-    let form = document.getElementById("add-work-form");
-    form.addEventListener("input", function () {
-      if (form["title"].value !== "" && form["image-file"].value !== "") {
-        form["submit-btn"].disabled = false;
-        form["submit-btn"].classList.remove("btn-disable");
-      }
-    });
-  }
-
-  //button "back" to go back into gallery modal, instead of add work modal
-  const getBackModal = function () {
-    resetDOM(modalWrapper);
-    addGalleryContent();
-    document
-      .getElementById("close-modal")
-      .addEventListener("click", closeModal);
-  };
-
-  //all element to create modal window "add work"
   const addWorkModal = function (e) {
     resetDOM(modalWrapper);
     modalWrapper.innerHTML = htmlAddWork;
     addTemplateModal("Ajout photo");
     let dropDownMenu = document.getElementById("js-dropdown");
     dropDownMenu.style.display = "none";
-    openDropdownBtn(dropDownMenu);
     dropDownCategories(dropDownMenu);
-    getUserImage();
-    sendWork();
-    checkValidForm();
     document
       .getElementById("close-modal")
       .addEventListener("click", closeModal);
-    document.getElementById("back-btn").addEventListener("click", getBackModal);
   };
 
   addGalleryContent();
