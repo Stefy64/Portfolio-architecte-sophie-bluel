@@ -18,7 +18,7 @@ buttonlogin.addEventListener("click", async function (event) {
   console.log(result);
 
   if (response.status == "200") {
-    window.sessionStorage.setItem("token", token);
+    window.localStorage.setItem("token", token);
     window.location.href = "index.html";
   } else if (response.status == "404") {
     console.log("error 404");
