@@ -3,97 +3,78 @@ let modal = null;
 let userImage = false;
 
 if (token != null) {
-  const openModal = async function (e) {
+  const openModal = function (e) {
     e.preventDefault();
-    const target = e.target.getAttribute("href");
-    if (target.startsWith("#")) {
-      modal = document.querySelector(target);
-    } else {
-      modal = await loadModal(target);
-    }
-    modal.style.display = null;
-    modal.removeAttribute("aria-hidden");
-    modal.setAttribute("aria-modal", "true");
+    document.getElementById("modal1").dataset.show = "true";
+    const target = document.getElementById("modal1");
+    target.style.display = null;
+    modal = target;
     modal.addEventListener("click", closeModal);
-    modal
-      .querySelector(".js-modal-close")
+    document
+      .getElementById("close-modal")
       .addEventListener("click", closeModal);
-    modal
+    document
       .querySelector(".js-modal-stop")
       .addEventListener("click", stopPropagation);
   };
-  console.log(openModal, "modal");
 
   const closeModal = function (e) {
     if (modal === null) return;
     e.preventDefault();
+    document.getElementById("modal1").dataset.show = "false";
     window.setTimeout(function () {
       modal.style.display = "none";
       modal = null;
       userImage = false;
+      getBackModal();
     }, 500);
-    modal.setAttribute("aria-hidden", "true");
-    modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
-    modal
-      .querySelector(".js-modal-close")
+    document
+      .getElementById("close-modal")
       .removeEventListener("click", closeModal);
-    modal
+    document
       .querySelector(".js-modal-stop")
       .removeEventListener("click", stopPropagation);
-    modal = null;
   };
-  console.log(closeModal, "closeModal");
 
   const stopPropagation = function (e) {
     e.stopPropagation();
   };
+
   function eventModal() {
     document.querySelector(".js-modal").addEventListener("click", openModal);
   }
 
-  const loadModal = async function (url) {
-    const target = "#" + url.split("#")[1];
-    const html = await fetch(url).then((response) => response.text());
-    console.log(html, target);
-  };
-
-  document.querySelectorAll(".js-modal").forEach((a) => {
-    a.addEventListener("click", openModal);
-  });
   var htmlGalleryModal = `<h2 id="title-modal"></h2>
-        <div id="gallery-modal" class="gallery-modal"></div>
+        <div class="gallery-modal"></div>
         <hr>
         <button id="add-img-btn" class="btn-primary">Ajouter une photo</button>
         <a class="delete-link" href="#">Supprimer la gallerie</a>`;
 
   var htmlAddWork = `<button id="back-btn"><i class="fa-solid fa-arrow-left"></i></button>
-  <h2 id="title-modal"></h2>
-  <form id="add-work-form" class="form-full" method="post" enctype="multipart/form-data">
-      <div id="add-img">
-          <img alt="Ajouter une image">
-          <label for="image-file" class="btn-light">
-              <input type="file" id="image-file" name="image-file" style="display:none;" accept="image/png, image/jpeg" required>
-              + Ajouter une photo
-          </label>
-          <small>jpg, png : 4mo max</small>
-      </div>
-      <label for="title">Titre</label>
-      <input id="title" class="input-field" name="title" type="text" maxlength="45" required>
-      <div class="dropdown">
-                                    <h3>Catégorie</h3>
-                                    <select class="input-field dropbtn" name="category" id="category">
-                                        <option value="1">Objets</option>
-                                        <option value="2">Appartements</option>
-                                        <option value="3">Hôtels & Restaurants</option>
-                                    </select>
-                                
-          <ul id="js-dropdown" class="dropdown-content" style="display: none;">
-          </ul>
-      </div>
-      <hr>
-      <button type="submit" name="submit-btn" id="submit-work" class="btn-primary btn-disable" disabled>Valider</button>
-  </form>`;
+        <h2 id="title-modal"></h2>
+        <form id="add-work-form" class="form-full" method="post" enctype="multipart/form-data">
+            <div id="add-img">
+                <img alt="Ajouter une image">
+                <label for="image-file" class="btn-light">
+                    <input type="file" id="image-file" name="image-file" style="display:none;" accept="image/png, image/jpeg" required>
+                    + Ajouter une photo
+                </label>
+                <small>jpg, png : 4mo max</small>
+            </div>
+            <label for="title">Titre</label>
+            <input id="title" class="input-base" name="title" type="text" maxlength="45" required>
+            <div class="dropdown">
+                <button class="input-base dropbtn" data-id="1" type="button" id="category" name="category" required>
+                    Objets
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <ul id="js-dropdown" class="dropdown-content" style="display: none;">
+                </ul>
+            </div>
+            <hr>
+            <button type="submit" name="submit-btn" id="submit-work" class="btn-primary btn-disable" disabled>Valider</button>
+        </form>`;
 
   function addTemplateModal(title) {
     let closeButton = document.createElement("button");
@@ -113,33 +94,20 @@ if (token != null) {
     const galleryModal = document.getElementsByClassName("gallery-modal")[0];
     eventModal();
 
-    var addWork = fetch("http://localhost:5678/api/works")
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (works) {
-        console.log("photos", works);
-        const gallerymodal = document.getElementById("gallery-modal");
-        works.forEach((elt) => {
-          console.log(elt.title);
+    promiseWorks
+      .then(function () {
+        works.forEach((work) => {
+          let figure = addWork(work, galleryModal, "éditer");
+          let iconButton = addDeleteIcons(figure, work);
 
-          const div = document.createElement("div");
-          const img = document.createElement("img");
-          gallerymodal.appendChild(div);
-
-          div.innerHTML = `
-          <figure>
-            <img crossorigin="anonymous" src=${elt.imageUrl}>
-          </figure>
-          <figcaption>éditer<figcaption>
-        `;
-
-          div.appendChild(img);
+          iconButton.addEventListener("click", deleteWorkAndRefresh);
         });
-          
-
-          
-        
+      })
+      .catch(function (err) {
+        console.log(
+          "L'erreur suivante sur l'ajout des travaux dans la fenêtre modale est survenue :"
+        );
+        console.log(err);
       });
 
     btnAddImg.addEventListener("click", addWorkModal);
@@ -156,12 +124,11 @@ if (token != null) {
       .then(function () {
         id = parseInt(id);
         for (let i = 0; i < works.length; i++) {
-       
           if (works[i].id === id) {
             works.splice(i, i);
           }
         }
-        e.target.parentNode.style.display = "none"; 
+        e.target.parentNode.style.display = "none";
         resetDOM(gallery);
         addAllWorks(works, gallery);
       })
@@ -186,7 +153,7 @@ if (token != null) {
   }
 
   function openDropdownBtn(dropDownMenu) {
-    let dropDownBtn = document.querySelector(".input-field.dropbtn");
+    let dropDownBtn = document.querySelector(".input-base.dropbtn");
     dropDownBtn.addEventListener("click", function (event) {
       dropDownMenu.style.display = "block";
       dropDownMenu.style.boxShadow = "0px 14px 16px rgba(0, 0, 0, 0.09)";
@@ -201,7 +168,6 @@ if (token != null) {
     });
   }
 
-
   const closeDropDown = function (e) {
     let dropDownMenu = document.getElementById("js-dropdown");
     if (dropDownMenu.style.display === "none") return;
@@ -212,6 +178,29 @@ if (token != null) {
       .querySelector(".js-modal-stop")
       .removeEventListener("click", closeDropDown);
   };
+
+  function dropDownCategories(dropDownMenu) {
+    let categories = getCategories();
+    categories.then(function (value) {
+      value.forEach((category) => {
+        let listElement = document.createElement("li");
+        dropDownMenu.appendChild(listElement);
+        listElement.dataset.id = category.id;
+        listElement.innerHTML = category.name;
+        listElement.addEventListener("click", closeDropDown);
+      });
+      setCategory(dropDownMenu);
+    });
+  }
+
+  function setCategory(dropDownMenu) {
+    dropDownMenu.addEventListener("click", function (event) {
+      let dropbtn = document.querySelector(".input-field.dropbtn");
+      let icon = "<i class='fa-solid fa-chevron-down'></i>";
+      dropbtn.innerHTML = event.target.textContent + icon;
+      dropbtn.dataset.id = event.target.dataset.id;
+    });
+  }
 
   function getUserImage() {
     let imageInput = document.getElementById("image-file");
@@ -224,6 +213,7 @@ if (token != null) {
       }
     });
   }
+
   function updateImg(imgElt, userInput) {
     imgElt.classList.add("img-thumbnails");
     imgElt.file = userInput;
@@ -316,6 +306,7 @@ if (token != null) {
       }
     });
   }
+
   const getBackModal = function () {
     resetDOM(modalWrapper);
     addGalleryContent();
@@ -331,6 +322,7 @@ if (token != null) {
     let dropDownMenu = document.getElementById("js-dropdown");
     dropDownMenu.style.display = "none";
     openDropdownBtn(dropDownMenu);
+    dropDownCategories(dropDownMenu);
     getUserImage();
     sendWork();
     checkValidForm();

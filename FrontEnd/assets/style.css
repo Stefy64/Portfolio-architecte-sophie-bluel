@@ -146,14 +146,14 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
-#portfolio {
+.portfolio {
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
 }
-#portfolio img {
+.portfolio img {
 	width: 100%;
 }
 #contact {
@@ -188,7 +188,8 @@ li:hover {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+input[type="submit"],
+input[type="button"]{
 	height: 50px;
 	font-size: 1.2em;
 	font-family: 'Syne';
@@ -371,6 +372,9 @@ footer nav ul {
     cursor: pointer;
     transition: background-color 0.3s;
     white-space: nowrap;
+}
+.btn-primary:hover {
+	background-color: #0e2f28;
 }
 .gallery-modal img {
 	width: 100%;

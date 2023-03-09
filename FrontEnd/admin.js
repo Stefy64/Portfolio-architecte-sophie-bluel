@@ -1,5 +1,5 @@
 
-const token = localStorage.getItem("token");
+const token = sessionStorage.getItem("token");
 console.log(token);
 
 
@@ -10,7 +10,7 @@ function changeInnerHtml(element, newInnerHtml) {
 function logOut(element) {
     element.setAttribute('href', 'index.html');
     element.addEventListener('click', function() {
-        localStorage.clear();
+        sessionStorage.clear();
     })   
 }
 function addHeaderBlack(element) {

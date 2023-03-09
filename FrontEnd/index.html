@@ -31,16 +31,14 @@
     </header>
     <main>
       <!-- Modal -->
-      <a href="#modal1" class="js-modal"></a>
-      <aside
+      <div
         id="modal1"
         class="modal"
-        aria-hidden="true"
-        style="display: none;"
+        data-show="false"
+        style="display: none"
       >
-        <div class="modal-wrapper js-modal-close js-modal-stop">
-        </div>
-      </aside>
+        <article class="modal-wrapper js-modal-stop"></article>
+      </div>
       <div id="introduction">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="Sophie Bluel">
@@ -72,7 +70,7 @@
         <a class="js-edit js-modal base-link" href="#modal1"></a>
       </section>
       <div class="filters"></div>
-      <div id="portfolio"></div>
+      <div class="portfolio"></div>
 
       <section id="contact">
         <h2>Contact</h2>
