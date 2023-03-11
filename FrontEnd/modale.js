@@ -1,7 +1,9 @@
+//Manage modal
 const modalWrapper = document.getElementsByClassName("modal-wrapper")[0];
 let modal = null;
 let userImage = false;
 
+//Load and run when connected
 if (token != null) {
   const openModal = function (e) {
     e.preventDefault();
@@ -52,30 +54,32 @@ if (token != null) {
         <a class="delete-link" href="#">Supprimer la gallerie</a>`;
 
   var htmlAddWork = `<button id="back-btn"><i class="fa-solid fa-arrow-left"></i></button>
-        <h2 id="title-modal"></h2>
-        <form id="add-work-form" class="form-full" method="post" enctype="multipart/form-data">
-            <div id="add-img">
-                <img alt="Ajouter une image">
-                <label for="image-file" class="btn-light">
-                    <input type="file" id="image-file" name="image-file" style="display:none;" accept="image/png, image/jpeg" required>
-                    + Ajouter une photo
-                </label>
-                <small>jpg, png : 4mo max</small>
-            </div>
-            <label for="title">Titre</label>
-            <input id="title" class="input-base" name="title" type="text" maxlength="45" required>
-            <div class="dropdown">
-                <button class="input-base dropbtn" data-id="1" type="button" id="category" name="category" required>
-                    Objets
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <ul id="js-dropdown" class="dropdown-content" style="display: none;">
-                </ul>
-            </div>
-            <hr>
-            <button type="submit" name="submit-btn" id="submit-work" class="btn-primary btn-disable" disabled>Valider</button>
-        </form>`;
+  <h2 id="title-modal"></h2>
+  <form id="add-work-form" class="form-full" method="post" enctype="multipart/form-data">
+      <div id="add-img">
+          <img src="assets/icons/picture-svgrepo.svg" alt="Ajouter une image">
+          <label for="image-file" class="btn-light">
+              <input type="file" id="image-file" name="image-file" style="display: none;" accept="image/png, image/jpeg" required>
+              + Ajouter une photo
+          </label>
+          <small>jpg, png : 4mo max</small>
+      </div>
+      <label for="title">Titre</label>
+      <input id="title" class="input-base" name="title" type="text" maxlength="45" required>
+      <label for="category">Catégorie</label>
+      <div class="dropdown">
+          <button class="input-base dropbtn" data-id="1" type="button" id="category" name="category" required>
+              Objets
+              <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <ul id="js-dropdown" class="dropdown-content" style="display: none;">
+          </ul>
+      </div>
+      <hr>
+      <button type="submit" name="submit-btn" id="submit-work" class="btn-primary btn-disable" disabled>Valider</button>
+  </form>`;
 
+  //Add close button and title    
   function addTemplateModal(title) {
     let closeButton = document.createElement("button");
     let iconClose = document.createElement("i");
@@ -86,6 +90,7 @@ if (token != null) {
     titleModal.innerHTML = title;
   }
 
+  //Add content gallery
   function addGalleryContent() {
     modalWrapper.innerHTML = htmlGalleryModal;
     addTemplateModal("Galerie photo");
@@ -179,6 +184,7 @@ if (token != null) {
       .removeEventListener("click", closeDropDown);
   };
 
+  //Add categories from server
   function dropDownCategories(dropDownMenu) {
     let categories = getCategories();
     categories.then(function (value) {
@@ -195,13 +201,14 @@ if (token != null) {
 
   function setCategory(dropDownMenu) {
     dropDownMenu.addEventListener("click", function (event) {
-      let dropbtn = document.querySelector(".input-field.dropbtn");
+      let dropbtn = document.querySelector(".input-base.dropbtn");
       let icon = "<i class='fa-solid fa-chevron-down'></i>";
       dropbtn.innerHTML = event.target.textContent + icon;
       dropbtn.dataset.id = event.target.dataset.id;
     });
   }
 
+  //Get image the user
   function getUserImage() {
     let imageInput = document.getElementById("image-file");
     imageInput.addEventListener("change", function (value) {
@@ -307,6 +314,7 @@ if (token != null) {
     });
   }
 
+  //Button "back"
   const getBackModal = function () {
     resetDOM(modalWrapper);
     addGalleryContent();

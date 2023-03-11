@@ -1,6 +1,13 @@
+//Removes filters
+if (sessionStorage.token === undefined) {
+} else {
+  let filtres = document.querySelector(".filters");
+  filtres.style.display = "none";
+}
 const token = sessionStorage.getItem("token");
 console.log(token);
 
+//Replaces login to logout
 function changeInnerHtml(element, newInnerHtml) {
   element.innerHTML = newInnerHtml;
 }
@@ -11,6 +18,8 @@ function logOut(element) {
     sessionStorage.clear();
   });
 }
+
+//Black header when logged in
 function addHeaderBlack(element) {
   let button = document.createElement("button");
   let icon = document.createElement("i");
@@ -23,6 +32,8 @@ function addHeaderBlack(element) {
 
   element.appendChild(button).innerHTML = "publier les changements";
 }
+
+//add "edit"
 function addEditButtons() {
   let elements = document.querySelectorAll(".js-edit");
 

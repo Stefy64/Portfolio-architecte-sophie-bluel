@@ -3,6 +3,7 @@ function resetDOM(element) {
   element.replaceChildren();
 }
 
+//Get all gallery from server
 async function getWorks() {
   await fetch("http://localhost:5678/api/works")
     .then(function (res) {
@@ -42,6 +43,7 @@ function addWork(works, element, title) {
   return figure;
 }
 
+//Get all category from server
 async function getCategories() {
   const categories = [];
   await fetch("http://localhost:5678/api/categories")
