@@ -24,8 +24,16 @@ buttonlogin.addEventListener("click", async function (event) {
   if (response.status == "200") {
     window.sessionStorage.setItem("token", token);
     window.location.href = "index.html";
+  } else if (response.status == "401") {
+    console.log("error 401");
+    return alert("l'identifiant et/ou le mot de passe ne correspondent pas");
+    
   } else if (response.status == "404") {
     console.log("error 404");
     return alert("l'identifiant et/ou le mot de passe ne correspondent pas");
   }
 });
+
+
+
+   

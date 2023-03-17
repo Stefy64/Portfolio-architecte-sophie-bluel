@@ -76,7 +76,7 @@ if (token != null) {
           </ul>
       </div>
       <hr>
-      <button type="submit" name="submit-btn" id="submit-work" class="btn-primary btn-disable" disabled>Valider</button>
+      <button type="submit" name="submit-btn" id="submit-work" class="btn-primary">Valider</button>
   </form>`;
 
   //Add close button and title    
